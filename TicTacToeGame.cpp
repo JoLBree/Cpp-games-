@@ -125,6 +125,7 @@ int TicTacToeGame::turn(){
 int TicTacToeGame::play(){
 	cout << *this << endl;
 	while (true){
+		//cout << "hey" << endl;
 		if (turn() == quit){
 			cout << playerToName(playerTurn) << " has quit. " << numTurns << " turns were played." << endl;
 			return quit;
@@ -195,27 +196,29 @@ bool checkUpRMatch(const vector<game_piece> &pieces, const unsigned int &boardx,
 	// check starting along x axis
 	for (unsigned int x = 0; x < boardx - numMatch; ++x){
 		unsigned int countMatch = 1;
-		unsigned int next = x + boardx + 1;
+		unsigned int i = x;
+		unsigned int next = i + boardx + 1;
 		while (countMatch != numMatch && next < pieces.size()){
-			if (pieces[x].display != " " && pieces[x].display == pieces[next].display){
+			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
 				++countMatch;
-				//cout << "x is  " << x << " next is " << next << " count is " << countMatch << endl;
+				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			else{
 				countMatch = 1;
-				//cout << "x is  " << x << " next is " << next << " count is " << countMatch << endl;
+				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			if (countMatch == numMatch){
-				//cout << "x is  " << x << " next is " << next << " count is " << countMatch << endl;
+				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 				return true;
 			}
-			x = next;
-			next = x + boardx + 1;
+			i = next;
+			next = i + boardx + 1;
 		}
 	}
 	// check along y axis
-	for (unsigned int i = boardx; i < (pieces.size() - (numMatch - 1)*(boardx + 1)); i += boardx){
+	for (unsigned int y = boardx; y < (pieces.size() - (numMatch - 1)*(boardx + 1)); y += boardx){
 		unsigned int countMatch = 1;
+		unsigned int i = y;
 		unsigned int next = i + boardx + 1;
 		while (countMatch != numMatch && next < pieces.size()){
 			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
@@ -241,27 +244,30 @@ bool checkUpLMatch(const vector<game_piece> &pieces, const unsigned int &boardx,
 	// check starting along x axis
 	for (unsigned int x = numMatch - 1; x < boardx; ++x){
 		unsigned int countMatch = 1;
-		unsigned int next = x + boardx - 1;
+		unsigned int i = x;
+		unsigned int next = i + boardx - 1;
 		while (countMatch != numMatch && next < pieces.size()){
-			if (pieces[x].display != " " && pieces[x].display == pieces[next].display){
+			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
 				++countMatch;
-				//cout << "x is  " << x << " next is " << next << " count is " << countMatch << endl;
+				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			else{
 				countMatch = 1;
-				//cout << "x is  " << x << " next is " << next << " count is " << countMatch << endl;
+				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			if (countMatch == numMatch){
-				//cout << "x is  " << x << " next is " << next << " count is " << countMatch << endl;
+				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 				return true;
 			}
-			x = next;
-			next = x + boardx - 1;
+			i = next;
+			next = i + boardx - 1;
 		}
+		//cout << "end stretch " << x << endl;
 	}
 	// check along y axis
-	for (unsigned int i = 2 * boardx - 1; i < (pieces.size() - (numMatch - 1)*(boardx)); i += boardx){
+	for (unsigned int y = 2 * boardx - 1; y < (pieces.size() - (numMatch - 1)*(boardx)); y += boardx){
 		unsigned int countMatch = 1;
+		unsigned int i = y;
 		unsigned int next = i + boardx - 1;
 		while (countMatch != numMatch && next < pieces.size()){
 			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
