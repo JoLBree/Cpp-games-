@@ -2,29 +2,24 @@
 #define TicTacToeGame_H
 
 #include "board.h"
+#include "GameBase.h"
 
 using namespace std;
 
-enum players{ playerX, playerO };
 
-class TicTacToeGame{
-private:
-	unsigned int boardx;
-	unsigned int boardy;
-	unsigned int numTurns;
-	vector<game_piece> pieces;
-	friend ostream& operator<<(std::ostream &strm, const TicTacToeGame &ttt);
-	players playerTurn;
-
+class TicTacToeGame : public GameBase{
 public:
 	TicTacToeGame();
-	bool done();
-	bool draw();
+	virtual bool done();
+	virtual bool draw();
 	bool isInner(const unsigned int &index);
-	int prompt(unsigned int &x, unsigned int &y);
-	int turn();
-	int play();
+	virtual int turn();
+	virtual void print() override{ cout << *this << endl; }; // it says insert *this into an ostream, unsure if this ostream should be cout
+
+protected:
+	friend ostream& operator<<(std::ostream &strm, const TicTacToeGame &ttt);
 };
+
 
 //function prototypes
 bool checkVertMatch(const vector<game_piece> &pieces, const unsigned int &boardx, const unsigned int &boardy, const unsigned int &numMatch);

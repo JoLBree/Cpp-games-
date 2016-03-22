@@ -20,22 +20,12 @@ using namespace std;
 //empty squares, with the horizontal and vertical coordinate axes labeled.For example, initial
 //the board might be printed out as :
 
-TicTacToeGame::TicTacToeGame()
-	:boardx(5), boardy(5), pieces(vector<game_piece>()), playerTurn(playerX), numTurns(0){
-	bool flip = false;
-	for (unsigned int i = 0; i < boardx * boardy; ++i){
-		if (i == 77){
-			pieces.push_back(game_piece(red, "x", "O"));
-			flip = !flip;
-		}
-		else{
-			pieces.push_back(game_piece());
-		}
-	}
+TicTacToeGame::TicTacToeGame() : GameBase(5, 5, playerX){
 }
 
+
 ostream& operator<<(ostream &strm, const TicTacToeGame &ttt) {
-	printBoard(ttt.pieces, ttt.boardx, ttt.boardy, true);
+	printBoard(ttt.pieces, ttt.boardx, ttt.boardy, ttt.longestDisplayLength, true);
 	return strm;
 }
 
@@ -61,32 +51,7 @@ bool TicTacToeGame::draw(){
 	return true;
 }
 
-int TicTacToeGame::prompt(unsigned int &x, unsigned int &y){
-	bool validInput = false;
-	string s;
-	unsigned int testx;
-	unsigned int testy;
-	while (!validInput){
-		cout << "Enter coordinates \"x,y\" or \"quit\"" << endl;
-		cin >> s;
-		if (s == "quit"){
-			return quit;
-		}
-		istringstream iss(s);
-		if (iss >> testx && iss.peek() == ',' && iss.ignore() && iss >> testy){
-			unsigned int index = boardx * testy + testx;
-			if (index < pieces.size() && testx < boardx && testy < boardy){
-				x = testx;
-				y = testy;
-				validInput = true;
-			}
-			else{
-				cout << "Please enter a coordinate within the board" << endl;
-			}
-		}
-	}
-	return enter_coords_done;
-}
+
 
 int TicTacToeGame::turn(){
 	playerTurn = rotate(playerTurn);
@@ -116,29 +81,14 @@ int TicTacToeGame::turn(){
 	}
 	pieces[index].name = playerToName(playerTurn);
 	pieces[index].display = playerToDisplay(playerTurn);
-	cout << endl << *this << endl << endl;
+	if (playerToDisplay(playerTurn).length() > longestDisplayLength){ // record longest string of display.
+		longestDisplayLength = playerToDisplay(playerTurn).length();
+	}
+	/*cout << endl << *this << endl << endl;*/
+	cout << endl << *this << endl;
 	cout << "Player " << playerToName(playerTurn) << ": " << x << ", " << y << endl;
 	++numTurns;
 	return valid_move_made;
-}
-
-int TicTacToeGame::play(){
-	cout << *this << endl;
-	while (true){
-		//cout << "hey" << endl;
-		if (turn() == quit){
-			cout << playerToName(playerTurn) << " has quit. " << numTurns << " turns were played." << endl;
-			return quit;
-		}
-		else if (done()){
-			cout << playerToName(playerTurn) << " has won!"<< endl;
-			return success;
-		}
-		else if (draw()){
-			cout << "No moves remain, the game is a draw. " << numTurns << " turns were played." << endl;
-			return game_draw;
-		}
-	}
 }
 
 bool TicTacToeGame::isInner(const unsigned int &index){
