@@ -10,17 +10,7 @@
 
 using namespace std;
 
-//Outside your game class, declare and define an insertion operator (operator<<) that takes a
-//reference to an ostream and a reference to a const game class object as parameters, and
-//returns the ostream reference that was passed in(this allows the operator to be called
-//repeatedly on the same ostream object as in cout << tictactoe_game << endl;).Inside your
-//game class, declare the insertion operator to be a friend so that it can access the private
-//member variables of the game object.The operator should print out the current state of the
-//game board with 'X' or 'O' characters for squares that have pieces on them, and spaces for
-//empty squares, with the horizontal and vertical coordinate axes labeled.For example, initial
-//the board might be printed out as :
-
-TicTacToeGame::TicTacToeGame() : GameBase(5, 5, playerX){
+TicTacToeGame::TicTacToeGame() : GameBase(tictactoe_default_board_size + buffer_size, tictactoe_default_board_size + buffer_size, tictactoe_default_win_length, playerX){
 }
 
 
@@ -32,10 +22,10 @@ ostream& operator<<(ostream &strm, const TicTacToeGame &ttt) {
 
 bool TicTacToeGame::done(){
 	// check vertical match
-	bool vertMatch = checkVertMatch(pieces, boardx, boardy, 3);
-	bool horiMatch = checkHoriMatch(pieces, boardx, boardy, 3);
-	bool upRMatch = checkUpRMatch(pieces, boardx, boardy, 3);
-	bool upLMatch = checkUpLMatch(pieces, boardx, boardy, 3);
+	bool vertMatch = checkVertMatch(pieces, boardx, boardy, tictactoe_default_win_length);
+	bool horiMatch = checkHoriMatch(pieces, boardx, boardy, tictactoe_default_win_length);
+	bool upRMatch = checkUpRMatch(pieces, boardx, boardy, tictactoe_default_win_length);
+	bool upLMatch = checkUpLMatch(pieces, boardx, boardy, tictactoe_default_win_length);
 	return (vertMatch || horiMatch || upRMatch || upLMatch);
 }
 
@@ -84,19 +74,20 @@ int TicTacToeGame::turn(){
 	if (playerToDisplay(playerTurn).length() > longestDisplayLength){ // record longest string of display.
 		longestDisplayLength = playerToDisplay(playerTurn).length();
 	}
+	latestPiece = index; // record piece just put down
 	/*cout << endl << *this << endl << endl;*/
 	cout << endl << *this << endl;
 	cout << "Player " << playerToName(playerTurn) << ": " << x << ", " << y << endl;
 	++numTurns;
 	return valid_move_made;
 }
-
-bool TicTacToeGame::isInner(const unsigned int &index){
-	if (index > boardx && index < (boardx * boardy) - boardx && index % boardx != 0 && index % boardx != boardx - 1){
-		return true;
-	}
-	return false;
-}
+//
+//bool TicTacToeGame::isInner(const unsigned int &index){
+//	if (index > boardx && index < (boardx * boardy) - boardx && index % boardx != 0 && index % boardx != boardx - 1){
+//		return true;
+//	}
+//	return false;
+//}
 
 bool checkVertMatch(const vector<game_piece> &pieces, const unsigned int &boardx, const unsigned int &boardy, const unsigned int &numMatch){
 	for (unsigned int x = 0; x < boardx; ++x){
@@ -151,14 +142,11 @@ bool checkUpRMatch(const vector<game_piece> &pieces, const unsigned int &boardx,
 		while (countMatch != numMatch && next < pieces.size()){
 			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
 				++countMatch;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			else{
 				countMatch = 1;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			if (countMatch == numMatch){
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 				return true;
 			}
 			i = next;
@@ -173,14 +161,11 @@ bool checkUpRMatch(const vector<game_piece> &pieces, const unsigned int &boardx,
 		while (countMatch != numMatch && next < pieces.size()){
 			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
 				++countMatch;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			else{
 				countMatch = 1;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			if (countMatch == numMatch){
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 				return true;
 			}
 			i = next;
@@ -199,20 +184,16 @@ bool checkUpLMatch(const vector<game_piece> &pieces, const unsigned int &boardx,
 		while (countMatch != numMatch && next < pieces.size()){
 			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
 				++countMatch;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			else{
 				countMatch = 1;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			if (countMatch == numMatch){
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 				return true;
 			}
 			i = next;
 			next = i + boardx - 1;
 		}
-		//cout << "end stretch " << x << endl;
 	}
 	// check along y axis
 	for (unsigned int y = 2 * boardx - 1; y < (pieces.size() - (numMatch - 1)*(boardx)); y += boardx){
@@ -222,14 +203,11 @@ bool checkUpLMatch(const vector<game_piece> &pieces, const unsigned int &boardx,
 		while (countMatch != numMatch && next < pieces.size()){
 			if (pieces[i].display != " " && pieces[i].display == pieces[next].display){
 				++countMatch;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			else{
 				countMatch = 1;
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 			}
 			if (countMatch == numMatch){
-				//cout << "i is  " << i << " next is " << next << " count is " << countMatch << endl;
 				return true;
 			}
 			i = next;
@@ -239,7 +217,7 @@ bool checkUpLMatch(const vector<game_piece> &pieces, const unsigned int &boardx,
 	return false;
 }
 
-string playerToName(players p){
+string TicTacToeGame::playerToName(players p){
 	switch (p){
 	case playerO:
 		return "Os";
@@ -250,7 +228,7 @@ string playerToName(players p){
 	}
 }
 
-string playerToDisplay(players p){
+string TicTacToeGame::playerToDisplay(players p){
 	switch (p){
 	case playerO:
 		return "O";
@@ -261,11 +239,13 @@ string playerToDisplay(players p){
 	}
 }
 
-players rotate(players p){
+TicTacToeGame::players TicTacToeGame::rotate(players p){
 	switch (p){
 	case playerO:
 		return playerX;
 	case playerX:
 		return playerO;
+	default:
+		return p;
 	}
 }

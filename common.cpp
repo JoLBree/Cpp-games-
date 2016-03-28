@@ -21,12 +21,11 @@ string makeLower(string a){
 	char * p;
 	for (unsigned int i = 0; i < a.size(); ++i){
 		p = &a[i];
-		if (*p >= 65 && *p <= 90){
-			*p += 32;
+		if (*p >= ascii_upper_letters_start && *p <= ascii_upper_letters_end){
+			*p += ascii_upper_lower_difference;
 		}
 	}
 	return a;
 }
-
 
 

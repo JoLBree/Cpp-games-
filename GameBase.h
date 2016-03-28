@@ -5,24 +5,45 @@
 
 using namespace std;
 
-enum players{ playerX, playerO };
+
 
 class GameBase{
+
+private:
+	void checkTop(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+	void checkBtm(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+	void checkRight(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+	void checkLeft(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+	void checkTopL(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+	void checkTopR(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+	void checkBtmL(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+	void checkBtmR(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
+
 protected:
+	virtual enum players{ playerX, playerO, playerB, playerW };
 	unsigned int boardx;
 	unsigned int boardy;
 	unsigned int numTurns;
 	unsigned int longestDisplayLength;
+	unsigned int latestPiece;
+	unsigned int winNumMatch;
 	vector<game_piece> pieces;
 	players playerTurn;
+	bool win();
+	bool potentialWinRemains(const vector<string> &displays);
+
 
 public:
-	GameBase(int x, int y, players plyr);
+	GameBase(int x, int y, int winLength, players plyr);
+	bool isInner(const unsigned int &index);
 	virtual void print() = 0;
 	virtual bool done() = 0;
 	virtual bool draw() = 0;
 	virtual int turn() = 0;
-	int prompt(unsigned int &x, unsigned int &y);
+	virtual string playerToName(players p) = 0;
+	virtual string playerToDisplay(players p) = 0;
+	virtual players rotate(players p) = 0;
+	virtual int prompt(unsigned int &x, unsigned int &y);
 	int play();
 	static GameBase* makeGame(int numArgs, char* args[]);
 };

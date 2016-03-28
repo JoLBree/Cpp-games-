@@ -7,6 +7,7 @@
 #include <sstream>
 #include "common.h"
 #include "board.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -65,119 +66,45 @@ int readPieces(ifstream &ifstrm, vector<game_piece> &pieces, unsigned int boardx
 }
 
 // Part 13
-int printBoard(const vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy, bool axes){
+int printBoard(const vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy, unsigned int longestLength, bool axes){
 	// check if vector size == board game size
 	if ((boardx)*(boardy) != pieces.size()){
 		return diff_vector_board_sizes;
 	}
 
 	// print board
-	for (int y = boardy - 1; y >= 0; --y){
+	for (int y = boardy - 1; y > 0; --y){
 		if (axes){
-			cout << y;
-		}
-		for (unsigned int x = 0; x < boardx; ++x){
-			int index = boardx * y + x;
-			if (pieces[index].name.empty()){
-				cout << " ";
+			if (y == boardy - 1){
+				cout << setw(longestLength) << " ";
 			}
 			else{
-				cout << pieces[index].display;
+				cout << setw(longestLength) << y;
 			}
 		}
-		cout << endl;
+		for (unsigned int x = 1; x < boardx; ++x){
+			int index = boardx * y + x;
+			if (pieces[index].name.empty()){
+				cout << setw(longestLength) << " ";
+			}
+			else{
+				cout << setw(longestLength) << pieces[index].display;
+			}
+			cout << " "; // put a space between pieces
+		}
+		cout << setw(longestLength) << endl;
 	}
 	if (axes){
 		cout << " ";
-		for (unsigned int x = 0; x < boardx; ++x){
-			cout << x;
-		}
-	}
-	return success;
-}
-
-
-// Extra credit
-int printNeighbors(const vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy){
-
-	if ((boardx)*(boardy) != pieces.size()){
-		return diff_vector_board_sizes;
-	}
-
-	int relPos[] = { -1, 1, -(int)boardx, -(int)boardx - 1, -(int)boardx + 1, (int)boardx, (int)boardx - 1, (int)boardx + 1 }; // casting required to negate and subtract boardx
-
-	for (unsigned int y = 0; y < boardy; ++y){
-		for (unsigned int x = 0; x < boardx; ++x){
-			int index = boardx * y + x;
-			if (!pieces[index].name.empty()){
-				printPiece(pieces[index], index, boardx, false);
-				cout << " : ";
-				switch (getBoardPos(index, boardx, boardy)){
-					cout << " hi ";
-				case botL: // print pieces according to whether the piece is near any edge
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != bot && i != L && i != botL && i != topL && i != botR){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-						}
-					}
-					break;
-				case bot:
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != bot && i != botR && i != botL){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-						}
-					}
-					break;
-				case botR:
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != bot && i != R && i != botR && i != topR && i != botL){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-						}
-					}
-					break;
-				case L:
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != topL && i != L && i != botL){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-						}
-					}
-					break;
-				case R:
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != topR && i != R && i != botR){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-						}
-					}
-					break;
-				case topL:
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != top && i != topR && i != topL && i != L && i != botL){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-							cout << "; ";
-						}
-					}
-					break;
-				case top:
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != top && i != topR && i != topL){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-						}
-					}
-					break;
-				case topR:
-					for (unsigned int i = 0; i < 8; ++i){
-						if (i != top && i != topR && i != topL && i != R && i != botR){
-							printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-						}
-					}
-					break;
-				default:
-					for (unsigned int i = 0; i < 8; ++i){
-						printPiece(pieces[index + relPos[i]], index + relPos[i], boardx);
-					}
-				}
-				cout << endl;
+		for (unsigned int x = 1; x < boardx; ++x){
+			if (x == boardy - 1 || x == 0){
+				cout << setw(longestLength) << " ";
 			}
+			else{
+				cout << setw(longestLength) << x;
+			}
+			cout << " ";
+
 		}
 	}
 	return success;

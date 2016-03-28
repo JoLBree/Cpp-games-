@@ -19,7 +19,7 @@ struct board{
 // Function prototypes
 int readDimensions(std::ifstream &ifstrm, unsigned int &x, unsigned int &y);
 int readPieces(std::ifstream &ifstrm, std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy);
-int printBoard(const std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy, bool axes = "false");
+int printBoard(const std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy, unsigned int longestLength, bool axes = "false");
 int printNeighbors(const std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy);
 boardPos getBoardPos(unsigned int index, unsigned int boardx, unsigned int boardy);
 void printPiece(const game_piece &piece, unsigned int index, unsigned int boardx, bool semicolon = "true");
