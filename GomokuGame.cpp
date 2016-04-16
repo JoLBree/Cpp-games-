@@ -12,11 +12,20 @@ using namespace std;
 
 
 GomokuGame::GomokuGame(unsigned int size, unsigned int winLength) : GameBase(size + buffer_size, size + buffer_size, winLength, playerB){
+	if (size > largest_one_digit_num){
+		int digits = 0;
+		while (size != 0){
+			size /= 10;
+			++digits;
+		}
+		longestDisplayLength = digits+1;
+	}
+	getSave(gomoku);
 }
 
 
 ostream& operator<<(ostream &strm, const GomokuGame &gg) {
-	printBoard(gg.pieces, gg.boardx, gg.boardy, gg.longestDisplayLength, true);
+	printBoard(gg.pieces, gg.boardx, gg.boardy, gg.longestDisplayLength, norm_axes);
 	return strm;
 }
 
@@ -33,9 +42,9 @@ bool GomokuGame::draw(){
 string GomokuGame::playerToName(players p){
 	switch (p){
 	case playerB:
-		return "Black Stone";
+		return "Black_Stone";
 	case playerW:
-		return "White Stone";
+		return "White_Stone";
 	default:
 		return "invalid";
 	}
@@ -76,6 +85,7 @@ int GomokuGame::turn(){
 	bool validMove = false;
 	while (!validMove){
 		if (prompt(x, y) == quit){
+			// FIXME quit
 			return quit;
 		}
 		else{
@@ -96,7 +106,8 @@ int GomokuGame::turn(){
 	latestPiece = index;
 	/*cout << endl << *this << endl << endl;*/
 	cout << endl << *this << endl;
-	cout << "Player " << playerToName(playerTurn) << ": " << x << ", " << y << endl;
+	moveList[playerTurn] += (to_string(x) + ", " + to_string(y) + "; ");
+	cout << "Player " << playerToName(playerTurn) << " " << moveList[playerTurn] << endl;
 	++numTurns;
 	return valid_move_made;
 }

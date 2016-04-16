@@ -19,6 +19,7 @@ public:
 	virtual string playerToName(players p);
 	virtual string playerToDisplay(players p);
 	virtual players rotate(players p);
+	virtual bool save(game_type g, bool write){ return GameBase::save(gomoku, write); };
 //
 protected:
 	friend ostream& operator<<(std::ostream &strm, const GomokuGame &ttt);

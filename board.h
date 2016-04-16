@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "pieces.h"
+#include "common.h"
 	
 // Enumerations
 // these are both indices to the RelPos[] array in board.cpp, and enums to determine which pieces to print
@@ -19,7 +20,7 @@ struct board{
 // Function prototypes
 int readDimensions(std::ifstream &ifstrm, unsigned int &x, unsigned int &y);
 int readPieces(std::ifstream &ifstrm, std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy);
-int printBoard(const std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy, unsigned int longestLength, bool axes = "false");
+int printBoard(const std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy, unsigned int longestLength, axes_type ax = norm_axes);
 int printNeighbors(const std::vector<game_piece> &pieces, unsigned int boardx, unsigned int boardy);
 boardPos getBoardPos(unsigned int index, unsigned int boardx, unsigned int boardy);
 void printPiece(const game_piece &piece, unsigned int index, unsigned int boardx, bool semicolon = "true");

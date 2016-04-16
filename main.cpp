@@ -19,17 +19,17 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	try
-	{
-		GameBase* shared_ptr = GameBase::makeGame(argc, argv);
-		int outcome = shared_ptr->play();
+	try{
+		//GameBase* shared_ptr = GameBase::makeGame(argc, argv);
+		//int outcome = shared_ptr->play();
+		GameBase::makeGame(argc, argv);
+		int outcome = GameBase::instance()->play();
 		return outcome;
 	}
-	catch (std::bad_alloc&)
-	{
+	catch (std::bad_alloc&){
 		return could_not_allocate_memory;
 	}
-	catch (processes p)
+	catch (processes p) // FIXME. need to add separate cases for each malformed input.
 	{
 		if (p == wrong_usage){
 			usage(argv[program_name], "game_name board_size(>3, if applicable) pieces_to_win(>1, if applicable)");

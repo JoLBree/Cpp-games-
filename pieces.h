@@ -11,7 +11,7 @@ struct game_piece{
 	piece_color color;
 	std::string name;
 	std::string display;
-	game_piece(piece_color c = no_color, std::string n = "", std::string d = " ");
+	game_piece(piece_color c = no_color, std::string n = "name", std::string d = " ");
 };
 
 // Function prototypes

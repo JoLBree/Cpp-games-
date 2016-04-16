@@ -11,11 +11,12 @@
 using namespace std;
 
 TicTacToeGame::TicTacToeGame() : GameBase(tictactoe_default_board_size + buffer_size, tictactoe_default_board_size + buffer_size, tictactoe_default_win_length, playerX){
+	getSave(tic_tac_toe);	
 }
 
 
 ostream& operator<<(ostream &strm, const TicTacToeGame &ttt) {
-	printBoard(ttt.pieces, ttt.boardx, ttt.boardy, ttt.longestDisplayLength, true);
+	printBoard(ttt.pieces, ttt.boardx, ttt.boardy, ttt.longestDisplayLength, norm_axes);
 	return strm;
 }
 
@@ -57,6 +58,7 @@ int TicTacToeGame::turn(){
 	bool validMove = false;
 	while (!validMove){
 		if (prompt(x, y) == quit){
+			// FIXME quit
 			return quit;
 		}
 		else{

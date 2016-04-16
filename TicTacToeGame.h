@@ -18,6 +18,7 @@ public:
 	virtual string playerToName(players p);
 	virtual string playerToDisplay(players p);
 	virtual players rotate(players p);
+	virtual bool save(game_type g, bool write){ return GameBase::save(tic_tac_toe, write); };
 
 protected:
 	friend ostream& operator<<(std::ostream &strm, const TicTacToeGame &ttt);

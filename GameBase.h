@@ -2,10 +2,10 @@
 #define GameBase_H
 
 #include "board.h"
+#include "common.h"
+#include <memory>
 
 using namespace std;
-
-
 
 class GameBase{
 
@@ -20,18 +20,20 @@ private:
 	void checkBtmR(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay = " ", const bool &matchSpace = false);
 
 protected:
-	virtual enum players{ playerX, playerO, playerB, playerW };
+	virtual enum players{ playerX, playerO, playerB, playerW, playerSudoku };
 	unsigned int boardx;
 	unsigned int boardy;
+	unsigned int winNumMatch;
 	unsigned int numTurns;
 	unsigned int longestDisplayLength;
 	unsigned int latestPiece;
-	unsigned int winNumMatch;
-	vector<game_piece> pieces;
 	players playerTurn;
+	vector<game_piece> pieces;
+	array<string, num_player_types> moveList;
+	static shared_ptr<GameBase> gameBasePtr;
 	bool win();
 	bool potentialWinRemains(const vector<string> &displays);
-
+	void getSave(game_type game);
 
 public:
 	GameBase(int x, int y, int winLength, players plyr);
@@ -45,16 +47,13 @@ public:
 	virtual players rotate(players p) = 0;
 	virtual int prompt(unsigned int &x, unsigned int &y);
 	int play();
-	static GameBase* makeGame(int numArgs, char* args[]);
+	//static GameBase * makeGame(int numArgs, char* args[]);
+	static void makeGame(int numArgs, char* args[]);
+	static shared_ptr<GameBase> instance();
+	//	bool save(int g);
+	virtual bool save(game_type g, bool write);
+	string gameToFile(game_type g);
 };
-
-//Add a static method to the base class that takes an integer and an array of pointers to 
-//char(the same types as are given to argc and argv in your program's main function signature) 
-//and returns a pointer to an object of your base class. The method should check that exactly one argument
-//has been passed to the program (in addition to the program's name), and if so that the string in argv[1] 
-//is "TicTacToe".If so, the method should use the new operator to dynamically default construct an object 
-//of your derived TicTacToe game class, and return the address of that object; otherwise, the method should 
-//return a singlular pointer(i.e., a pointer whose value is 0), indicating that no object was constructed.
 
 
 #endif /* GameBase_H */
