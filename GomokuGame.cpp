@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include "board.h"
+#include "GameBase.h"
 #include "GomokuGame.h"
 #include "common.h"
 
@@ -85,7 +85,6 @@ int GomokuGame::turn(){
 	bool validMove = false;
 	while (!validMove){
 		if (prompt(x, y) == quit){
-			// FIXME quit
 			return quit;
 		}
 		else{
@@ -104,7 +103,6 @@ int GomokuGame::turn(){
 		longestDisplayLength = playerToDisplay(playerTurn).length();
 	}
 	latestPiece = index;
-	/*cout << endl << *this << endl << endl;*/
 	cout << endl << *this << endl;
 	moveList[playerTurn] += (to_string(x) + ", " + to_string(y) + "; ");
 	cout << "Player " << playerToName(playerTurn) << " " << moveList[playerTurn] << endl;

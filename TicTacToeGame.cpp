@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include "board.h"
+#include "GameBase.h"
 #include "TicTacToeGame.h"
 #include "common.h"
 
@@ -17,6 +17,7 @@ TicTacToeGame::TicTacToeGame() : GameBase(tictactoe_default_board_size + buffer_
 
 ostream& operator<<(ostream &strm, const TicTacToeGame &ttt) {
 	printBoard(ttt.pieces, ttt.boardx, ttt.boardy, ttt.longestDisplayLength, norm_axes);
+	// FIXME print successively
 	return strm;
 }
 
@@ -46,6 +47,7 @@ bool TicTacToeGame::draw(){
 
 int TicTacToeGame::turn(){
 	playerTurn = rotate(playerTurn);
+	cout << "Player " << playerToName(playerTurn) << " " << moveList[playerTurn] << endl;
 	if (playerTurn == playerO){
 		cout << "Player O, enter a coordinate" << endl;
 	}
@@ -77,19 +79,11 @@ int TicTacToeGame::turn(){
 		longestDisplayLength = playerToDisplay(playerTurn).length();
 	}
 	latestPiece = index; // record piece just put down
-	/*cout << endl << *this << endl << endl;*/
 	cout << endl << *this << endl;
-	cout << "Player " << playerToName(playerTurn) << ": " << x << ", " << y << endl;
+	moveList[playerTurn] += (to_string(x) + ", " + to_string(y) + "; ");
 	++numTurns;
 	return valid_move_made;
 }
-//
-//bool TicTacToeGame::isInner(const unsigned int &index){
-//	if (index > boardx && index < (boardx * boardy) - boardx && index % boardx != 0 && index % boardx != boardx - 1){
-//		return true;
-//	}
-//	return false;
-//}
 
 bool checkVertMatch(const vector<game_piece> &pieces, const unsigned int &boardx, const unsigned int &boardy, const unsigned int &numMatch){
 	for (unsigned int x = 0; x < boardx; ++x){
@@ -98,7 +92,7 @@ bool checkVertMatch(const vector<game_piece> &pieces, const unsigned int &boardx
 			unsigned int index = boardx * y + x;
 			unsigned int above = boardx * (y + 1) + x;
 			if (index < pieces.size() && above < pieces.size()){
-				if (pieces[index].display != " " && pieces[index].display == pieces[above].display){
+				if (pieces[index].display != " " && pieces[index].display != "-" && pieces[index].display == pieces[above].display){
 					++countMatch;
 				}
 				else{

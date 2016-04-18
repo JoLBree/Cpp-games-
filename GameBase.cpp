@@ -10,6 +10,7 @@
 #include "GameBase.h"
 #include "GomokuGame.h"
 #include "SudokuGame.h"
+#include "UltiTTT.h"
 #include <memory>
 
 using namespace std;
@@ -18,150 +19,18 @@ shared_ptr<GameBase> GameBase::gameBasePtr = nullptr;
 
 GameBase::GameBase(int x, int y, int winLength, players plyr)
 	:boardx(x), boardy(y), winNumMatch(winLength), pieces(vector<game_piece>()), playerTurn(plyr), longestDisplayLength(2), latestPiece(0), numTurns(0){
-	//bool flip = false;
-
+	
 	for (unsigned int i = 0; i < moveList.size(); ++i){
 		moveList[i] = "moves: ";
 	}
 
 	unsigned int a = 0;
 	for (unsigned int i = 0; i < boardx * boardy; ++i){
-	////	if (i != 28){
-	////		string s = to_string((i / boardy + i%boardx) % 9);
-	////		pieces.push_back(game_piece(no_color, "", s));
-	////	}
-	////	else{
-			pieces.push_back(game_piece());
-	////	}
-
+		pieces.push_back(game_piece());
 	}
-
-	//for (unsigned int i = 0; i < 11; ++i){
-	//	pieces.push_back(game_piece());
-	//}
-	//	// 1
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece());
-	//	
-	//	// 2
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece());
-
-	//	// 3
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece());
-
-	//	// 4
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece());
-
-	//	// 5
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece());
-
-	//	// 6
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece());
-
-	//	// 7
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece());
-
-	//	// 8
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece());
-
-	//	// 9
-	//	pieces.push_back(game_piece());
-	//	pieces.push_back(game_piece(no_color, "", "6"));
-	//	pieces.push_back(game_piece(no_color, "", "8"));
-	//	pieces.push_back(game_piece(no_color, "", "2"));
-	//	pieces.push_back(game_piece(no_color, "", "9"));
-	//	pieces.push_back(game_piece(no_color, "", "4"));
-	//	pieces.push_back(game_piece(no_color, "", "7"));
-	//	pieces.push_back(game_piece(no_color, "", "5"));
-	//	pieces.push_back(game_piece(no_color, "", "1"));
-	//	pieces.push_back(game_piece(no_color, "", "3"));
-	//	pieces.push_back(game_piece());
-	//for (unsigned int i = 0; i < 11; ++i){
-	//	pieces.push_back(game_piece());
-	//}
-	
 }
 
-void GameBase::getSave(game_type game){
+bool GameBase::getSave(game_type game){
 	ifstream ifstrm;
 	ifstrm.open(gameToFile(game));
 	if (!ifstrm.is_open()){
@@ -171,12 +40,10 @@ void GameBase::getSave(game_type game){
 	string a;
 	string tempString;
 	int tempInt;
-	if (getline(ifstrm, a)){ // if have data
-		cout << "h" << endl;
+	if (getline(ifstrm, a)){
 		istringstream iss(a);
-		cout << "h" << endl;
 		if (iss >> tempString && tempString == "game:" && iss >> tempInt && tempInt == game){ // if have data
-			if (getline(ifstrm, a) && a == "boardx:boardy:winNumMatch:numTurns:longestDisplayLength:latestPiece:playerTurn"){ // if have data
+			if (getline(ifstrm, a) && a == "boardx:boardy:winNumMatch:numTurns:longestDisplayLength:latestPiece:playerTurn"){
 				if (getline(ifstrm, a)){
 					istringstream iss(a);
 					unsigned int temp_boardx;
@@ -186,11 +53,8 @@ void GameBase::getSave(game_type game){
 					unsigned int temp_longestDisplayLength;
 					unsigned int temp_latestPiece;
 					unsigned int temp_playerTurn;
-
-					cout << "h" << endl;
 					if (iss >> temp_boardx && iss >> temp_boardy && iss >> temp_winNumMatch && iss >> temp_numTurns && iss >> temp_longestDisplayLength && iss >> temp_latestPiece && iss >> temp_playerTurn){
 						for (unsigned int i = 0; i < moveList.size(); ++i){
-						//while (a != "pieces:"){
 							if (getline(ifstrm, a)){
 								unsigned int temp_player;
 								string temp_moveList;
@@ -206,10 +70,7 @@ void GameBase::getSave(game_type game){
 								throw bad_moves;
 							}
 						}
-
-						cout << "h" << endl;
 						vector<game_piece> temp_pieces(temp_boardx*temp_boardy);
-						//bool some_valid_piece = false;
 						if (getline(ifstrm, a) && a == "pieces:"){
 							while (getline(ifstrm, a)){
 								istringstream iss(a);
@@ -219,13 +80,10 @@ void GameBase::getSave(game_type game){
 								string mydisplay;
 								if (iss >> index && iss >> mycolor && iss >> myname && iss >> mydisplay){
 									piece_color c = piece_color(mycolor);
-									cout << "h0" << mycolor << "" << c << " " << index << endl;
 									if (c != invalid && index < temp_boardx* temp_boardy){
-										cout << "h1" << endl;
 										temp_pieces[index].color = c;
 										temp_pieces[index].name = myname;
 										temp_pieces[index].display = mydisplay;
-										//some_valid_piece = true;
 									}
 									else{
 										throw invalid_piece;
@@ -241,8 +99,9 @@ void GameBase::getSave(game_type game){
 							numTurns = temp_numTurns;
 							longestDisplayLength = temp_longestDisplayLength;
 							latestPiece = temp_latestPiece;
-							playerTurn = players(temp_playerTurn); //FIXME, might be []
+							playerTurn = players(temp_playerTurn);
 							pieces = temp_pieces;
+							return true;
 						}
 						else{
 							throw bad_board;
@@ -261,6 +120,7 @@ void GameBase::getSave(game_type game){
 			}
 		}
 	} // do nothing, the default is fine
+	return false;
 }
 
 shared_ptr<GameBase> GameBase::instance(){
@@ -278,12 +138,14 @@ string GameBase::gameToFile(game_type g){
 		return "gomoku.txt";
 	case sudoku:
 		return "sudoku.txt";
+	case ulti_ttt:
+		return "ultiTTT.txt";
 	default:
 		return "dummy.txt";
 	}
 }
 
-bool GameBase::save(game_type g, bool write){
+void GameBase::save(game_type g, bool write){
 	ofstream ofs;
 	ofs.open(gameToFile(g));
 	if (write){
@@ -302,10 +164,8 @@ bool GameBase::save(game_type g, bool write){
 	}
 	else{
 		ofs << "" << endl;
-		//ofs << dummy_game << endl;
 	}
 
-	return true;
 }
 
 void GameBase::makeGame(int numArgs, char* args[]){
@@ -318,13 +178,15 @@ void GameBase::makeGame(int numArgs, char* args[]){
 		if (game_name == "TicTacToe" && numArgs == expected_name_args){
 			TicTacToeGame * tttGame = new TicTacToeGame();
 			gameBasePtr = make_shared<TicTacToeGame>(*tttGame);
-			//return new TicTacToeGame();
+		}
+		else if (game_name == "UltimateTicTacToe" && numArgs == expected_name_args){
+			UltiTTT * tttGame = new UltiTTT();
+			gameBasePtr = make_shared<UltiTTT>(*tttGame);
 		}
 		else if (game_name == "Gomoku"){
 			if (numArgs == expected_name_args){
 				GomokuGame * gmGame = new GomokuGame();
 				gameBasePtr = make_shared<GomokuGame>(*gmGame);
-				//return new GomokuGame();
 			}
 			else if (numArgs == gomoku_board_size){
 				istringstream iss(args[gomoku_board_size-1]);
@@ -332,9 +194,8 @@ void GameBase::makeGame(int numArgs, char* args[]){
 				if (iss >> boardSize && boardSize >= min_board_size){
 					GomokuGame * gmGame = new GomokuGame(boardSize);
 					gameBasePtr = make_shared<GomokuGame>(*gmGame);
-					//return new GomokuGame(boardSize);
 				} else{
-					throw wrong_usage;
+					throw disallowed_board_size;
 				}
 			}
 			else if (numArgs == gomoku_win_length){
@@ -345,25 +206,22 @@ void GameBase::makeGame(int numArgs, char* args[]){
 				if (iss1 >> boardSize && iss2 >> winlength && boardSize >= min_board_size && winlength >= min_win_length && boardSize >= winlength){
 					GomokuGame * gmGame = new GomokuGame(boardSize, winlength);
 					gameBasePtr = make_shared<GomokuGame>(*gmGame);
-					//return new GomokuGame(boardSize, winlength);
 				} else{
-					throw wrong_usage;
+					throw disallowed_board_size;
 				}
 			} else{
 				throw wrong_usage;
 			}
 		}else if (game_name == "Sudoku" && numArgs == expected_name_args){
-			// FIXME
 			SudokuGame * sdkGame = new SudokuGame();
 			gameBasePtr = make_shared<SudokuGame>(*sdkGame);
 		}		
 		else{
-			throw wrong_usage;
+			throw bad_game_name;
 		}
 	} else{
 		throw wrong_usage;
 	}
-	//return 0; // this has to return a GameBase. 0 is the only non-GameBase that can be returned, and is returned if the args are poorly formatted
 }
 
 
@@ -437,8 +295,6 @@ bool GameBase::isInner(const unsigned int &index){
 }
 
 bool GameBase::win(){
-//bool GameBase::win(const unsigned int &winNumMatch){
-	//cout << "latest piece is " << latestPiece << endl;
 	unsigned int vert = 1;
 	unsigned int hori = 1;
 	unsigned int fwdSlash = 1;
@@ -451,7 +307,6 @@ bool GameBase::win(){
 	checkTopR(fwdSlash, latestPiece);
 	checkBtmR(bkwdSlash, latestPiece);
 	checkTopL(bkwdSlash, latestPiece);
-	//cout << "win vert is " << vert << " hori is " << hori << endl;
 	if (vert >= winNumMatch || hori >= winNumMatch || fwdSlash >= winNumMatch || bkwdSlash >= winNumMatch){
 		return true;
 	}
@@ -460,11 +315,11 @@ bool GameBase::win(){
 	}
 }
 
+
+
 bool GameBase::potentialWinRemains(const vector<string> &displays){
 	for (unsigned int index = boardx; index < pieces.size() - boardx; ++index){
-		//cout << "index is " << index << endl;
 		if (isInner(index) && pieces[index].display == " "){ // for every possible move left on the board, check if one can lead to a win
-			//cout << "enter index is " << index << endl;
 			for (vector<string>::const_iterator i = displays.begin(); i != displays.end(); ++i) {
 				unsigned int vert = 1;
 				checkTop(vert, index, *i, true);
@@ -499,16 +354,13 @@ bool GameBase::potentialWinRemains(const vector<string> &displays){
 void GameBase::checkTop(unsigned int &numMatch, const unsigned int &index, const string &matchDisplay, const bool &matchSpace){
 	unsigned int above = boardx + index;
 	if (isInner(above)){
-		//cout << " above is " << above << " and index is " << index;
 		if (!matchSpace && pieces[index].display == pieces[above].display){
 			++numMatch;
-			//cout << "is this triggering " << matchSpace << endl;
 			checkTop(numMatch, above);
 			return;
 		}
 		else if (matchSpace && (pieces[above].display == " " || pieces[above].display == matchDisplay)){
 			++numMatch;
-			//cout << "numMatch is " << numMatch << " winNumMatch is " << winNumMatch << endl;
 			if (numMatch >= winNumMatch){
 				return;
 			}
@@ -525,13 +377,11 @@ void GameBase::checkBtm(unsigned int &numMatch, const unsigned int &index, const
 	if (isInner(below)){
 		if (!matchSpace && pieces[index].display == pieces[below].display){
 			++numMatch;
-			//cout << "is this triggering " << matchDisplay << endl;
 			checkBtm(numMatch, below);
 			return;
 		}
 		else if (matchSpace && (pieces[below].display == " " || pieces[below].display == matchDisplay)){
 			++numMatch;
-			//cout << "numMatch is " << numMatch << " winNumMatch is " << winNumMatch << endl;
 			if (numMatch >= winNumMatch){
 				return;
 			}

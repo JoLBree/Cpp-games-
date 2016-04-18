@@ -30,7 +30,11 @@ enum processes{
 	wrong_save_arg_num = 14,
 	invalid_piece = 15,
 	bad_board = 16,
-	bad_moves = 17
+	bad_moves = 17,
+	disallowed_board_size = 18,
+	bad_game_name = 19,
+	invalid_boardNum = 20,
+	invalid_index_to_boardNum = 21
 };
 
 // Enumeration of array indices
@@ -50,6 +54,10 @@ enum constants{
 	tictactoe_default_win_length = 3,
 	sudoku_default_board_size = 9,
 	sudoku_default_win_length = 0,
+	ulti_ttt_default_board_size = 3,
+	ulti_ttt_default_win_length = 3,
+	num_mini_ttts = 9,
+	ulti_ttt_x_axes_width = 14,
 	ascii_upper_letters_start = 65,
 	ascii_upper_letters_end = 90,
 	ascii_upper_lower_difference = 32,
@@ -69,20 +77,21 @@ enum game_type{
 	dummy_game = 0,
 	tic_tac_toe = 1,
 	gomoku = 2,
-	sudoku = 3
+	sudoku = 3,
+	ulti_ttt = 4
 };
 
 enum axes_type{
 	norm_axes = 1,
-	sudoku_axes = 2
+	sudoku_axes = 2,
+	ulti_ttt_axes = 3
 };
 
 // Function prototypes
 int usage(char program_name[], string info = "");
 string makeLower(string a);
 
-//const static int square_starts[] = { 12, 15, 18, 45, 48, 51, 78, 81, 84 }; // THESE ARE NOT HARDCODED CONSTANTS. Please don't make me give them individual enum values. The rules of sudoku are set. If these indices need to be changed, they can all be changed here.
-
 const static array<int, 9> square_starts = { 12, 15, 18, 45, 48, 51, 78, 81, 84 };
+const static array<int, 3> backwards_ttt_row_starts = {6, 3, 0};
 
 #endif /* COMMON_H */

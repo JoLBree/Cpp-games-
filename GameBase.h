@@ -28,15 +28,15 @@ protected:
 	unsigned int longestDisplayLength;
 	unsigned int latestPiece;
 	players playerTurn;
-	vector<game_piece> pieces;
 	array<string, num_player_types> moveList;
 	static shared_ptr<GameBase> gameBasePtr;
 	bool win();
 	bool potentialWinRemains(const vector<string> &displays);
-	void getSave(game_type game);
+	bool getSave(game_type game);
 
 public:
 	GameBase(int x, int y, int winLength, players plyr);
+	vector<game_piece> pieces;
 	bool isInner(const unsigned int &index);
 	virtual void print() = 0;
 	virtual bool done() = 0;
@@ -47,11 +47,9 @@ public:
 	virtual players rotate(players p) = 0;
 	virtual int prompt(unsigned int &x, unsigned int &y);
 	int play();
-	//static GameBase * makeGame(int numArgs, char* args[]);
 	static void makeGame(int numArgs, char* args[]);
 	static shared_ptr<GameBase> instance();
-	//	bool save(int g);
-	virtual bool save(game_type g, bool write);
+	virtual void save(game_type g, bool write);
 	string gameToFile(game_type g);
 };
 

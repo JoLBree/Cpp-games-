@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include "board.h"
+#include "GameBase.h"
 #include "SudokuGame.h"
 #include "common.h"
 #include <set>
@@ -12,16 +12,36 @@
 using namespace std;
 
 SudokuGame::SudokuGame() : GameBase(sudoku_default_board_size + buffer_size, sudoku_default_board_size + buffer_size, sudoku_default_win_length, playerSudoku){
-	getSave(sudoku);
+	if (!getSave(sudoku)){
+		ifstream ifstrm;
+		ifstrm.open("sudoku0.txt");
+		if (!ifstrm.is_open()){
+			throw fail_to_open_file;
+		};
+		string a;
+		int tempInt;
+		for (unsigned int y = 0; y < sudoku_default_board_size; ++y){
+			if (getline(ifstrm, a)){
+				istringstream iss(a);
+				for (unsigned int x = 0; x < sudoku_default_board_size; ++x){
+					if (iss >> tempInt && tempInt != 0){
+						unsigned int index = boardx*(y+1)+1+x;
+						pieces[index].name = "fixed";
+						pieces[index].display = to_string(tempInt);
+					}
+				}
+			}
+		}
+		
+	}
 }
 
 ostream& operator<<(ostream &strm, const SudokuGame &sd) {
-	printBoard(sd.pieces, sd.boardx, sd.boardy, sd.longestDisplayLength, sudoku_axes); //FIXME. implement print as sudoku_axes
+	printBoard(sd.pieces, sd.boardx, sd.boardy, sd.longestDisplayLength, sudoku_axes);
 	return strm;
 }
 
 int SudokuGame::turn(){
-	//cout << "Enter a coodinate and a tile. eg: x,y 9" << endl;
 	unsigned int x;
 	unsigned int y;
 	unsigned int tile;
@@ -31,7 +51,7 @@ int SudokuGame::turn(){
 		try{
 			prompt(x, y, tile);
 			index = boardx * y + x;
-			if (isInner(index) && pieces[index].name == "name" && tile <= largest_sudoku_tile){
+			if (isInner(index) && pieces[index].name != "fixed" && tile <= largest_sudoku_tile){
 				validMove = true;
 			}
 			else{
@@ -48,7 +68,8 @@ int SudokuGame::turn(){
 	}
 	latestPiece = index;
 	cout << endl << *this << endl;
-	cout << "Latest move is " << x << "," << y << " <- " << pieces[index].display << endl;
+	moveList[playerTurn] += (to_string(tile) + "->" + to_string(x) + "," + to_string(y) + "; ");
+	cout << "Player " << playerToName(playerTurn) << " " << moveList[playerTurn] << endl;
 	++numTurns;
 	return valid_move_made;
 }
@@ -82,13 +103,7 @@ void SudokuGame::prompt(unsigned int &x, unsigned int &y, unsigned int &tile){
 }
 
 bool SudokuGame::done(){
-	
 	return (checkLines() && checkSquares());
-
-	// for /// loop stuff
-		// if piece is " " blank, return false
-		// if nums.insert is false, return false
-		// if nums.size() is 9, return true
 }
 
 bool SudokuGame::checkLines(){

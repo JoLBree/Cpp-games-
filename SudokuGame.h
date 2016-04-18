@@ -16,12 +16,12 @@ public:
 	virtual bool done();
 	virtual bool draw(){ return false; };
 	virtual int turn();
-	virtual void print() override{ cout << *this << endl; }; // it says insert *this into an ostream, unsure if this ostream should be cout
+	virtual void print() override{ cout << *this << endl; };
 	virtual void prompt(unsigned int &x, unsigned int &y, unsigned int &tile);
 	virtual string playerToName(players p);
 	virtual string playerToDisplay(players p){ return ""; };
 	virtual players rotate(players p){ return p; };
-	virtual bool save(game_type g, bool write){ return GameBase::save(sudoku, write); };
+	virtual void save(game_type g, bool write){ return GameBase::save(sudoku, write); };
 
 	bool checkLines();
 	bool checkSquares();
